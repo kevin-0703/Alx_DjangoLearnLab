@@ -17,7 +17,7 @@ def get_books_by_author(author_name):
 #list all books in a library
 def get_all_books_in_library(library_name):
     try:
-        library=Library.objects.get(Library=library_name)
+        library=Library.objects.get(library=library_name)
         books= library.books.all()
         print(f"Books in {library_name}:")
         for book in books:
