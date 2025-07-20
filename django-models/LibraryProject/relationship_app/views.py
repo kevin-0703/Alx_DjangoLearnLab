@@ -51,7 +51,7 @@ def register_view(request):
     return render(request, 'relationship_app/register.html', {'form': form})
 
 def is_admin(user):
-    return hasattr(user, 'userprofile') and user.userprofile.role == "Admin"
+    return hasattr(user, 'userprofile') and user.userprofile.role =='Admin'
 
 def is_librarian(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == "Librarian"
