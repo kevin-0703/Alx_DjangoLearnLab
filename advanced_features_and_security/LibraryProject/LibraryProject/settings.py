@@ -124,3 +124,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 'DIRS': [BASE_DIR / 'relationship_app/templates'],
 AUTH_USER_MODEL = 'relationship_app.CustomUser'  # or 'accounts.CustomUser' if you put it there
 
+AUTH_USER_MODEL = "bookshelf.CustomUser"
