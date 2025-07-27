@@ -32,6 +32,61 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = []
+# SECURITY: Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True  # Ensures all connections use HTTPS
+
+# SECURITY: Use HSTS to enforce HTTPS in the browser
+SECURE_HSTS_SECONDS = 31536000  # One year in seconds
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow site to be added to browser preload lists
+# SECURITY: Ensure cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True  # Secure session cookies
+CSRF_COOKIE_SECURE = True     # Secure CSRF cookies
+# SECURITY HEADERS
+
+# Prevent browsers from MIME-sniffing the content type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable the browser’s built-in XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent the site from being embedded in iframes (anti-clickjacking)
+X_FRAME_OPTIONS = "DENY"
+server {
+    listen 80;
+    server_name yourdomain.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name yourdomain.com;
+
+    ssl_certificate /etc/ssl/certs/your_cert.pem;
+    ssl_certificate_key /etc/ssl/private/your_key.pem;
+
+    # Django app proxy setup here
+    location / {
+        proxy_pass http://localhost:8000;
+        include proxy_params;
+    }
+}
+
+"""
+Security Enhancements for HTTPS:
+
+- SECURE_SSL_REDIRECT: Forces all traffic to HTTPS
+- SECURE_HSTS_SECONDS: Enforces HTTPS in the browser for 1 year
+- SECURE_HSTS_INCLUDE_SUBDOMAINS: Applies the HSTS rule to all subdomains
+- SECURE_HSTS_PRELOAD: Requests browser vendors to preload HTTPS for your domain
+- SESSION_COOKIE_SECURE: Ensures session cookies are transmitted securely
+- CSRF_COOKIE_SECURE: Ensures CSRF cookies are transmitted securely
+- SECURE_CONTENT_TYPE_NOSNIFF: Prevents MIME-sniffing attacks
+- SECURE_BROWSER_XSS_FILTER: Activates browser XSS filters
+- X_FRAME_OPTIONS: Prevents clickjacking by disallowing framing
+"""
+
+
 
 
 # Application definition
