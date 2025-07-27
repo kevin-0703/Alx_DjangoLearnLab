@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "relationship_app",
+    "bookshelf",
 ]
+AUTH_USER_MODEL = "bookshelf.CustomUser"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -54,18 +56,20 @@ ROOT_URLCONF = "LibraryProject.urls"
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'relationship_app/templates'],  # OR whatever your template folder is
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = "LibraryProject.wsgi.application"
 
@@ -122,6 +126,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 'DIRS': [BASE_DIR / 'relationship_app/templates'],
-AUTH_USER_MODEL = 'relationship_app.CustomUser'  # or 'accounts.CustomUser' if you put it there
 
-AUTH_USER_MODEL = "bookshelf.CustomUser"
+AUTH_USER_MODEL = 'relationship_app.CustomUser'  # or 'accounts.CustomUser' if you put it there
