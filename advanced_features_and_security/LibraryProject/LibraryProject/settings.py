@@ -52,6 +52,10 @@ SECURE_BROWSER_XSS_FILTER = True
 
 # Prevent the site from being embedded in iframes (anti-clickjacking)
 X_FRAME_OPTIONS = "DENY"
+# When using a proxy like Nginx or Heroku to handle HTTPS
+# This tells Django to trust the `X-Forwarded-Proto` header to determine if the original request was secure
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 server {
     listen 80;
     server_name yourdomain.com;
