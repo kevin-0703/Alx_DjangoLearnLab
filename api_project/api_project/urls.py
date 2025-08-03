@@ -23,5 +23,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/', include('api.urls')),  
     path("books/", BookList.as_view({'get': 'list'}), name="book-list"),
-    path("", include("api.urls"),
+    path('', include('api.urls')),
 ]
