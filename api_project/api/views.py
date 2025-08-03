@@ -8,6 +8,6 @@ from rest_framework import generics
 class BookList(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-class BookViewSet(generics.RetriveUpdateDestroyAPIView):
+class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
