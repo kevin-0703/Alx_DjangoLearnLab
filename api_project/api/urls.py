@@ -7,5 +7,8 @@ router.register(r'books', BookList)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('books/', BookList.as_view({'get': 'list'}), name='book-list'),
+    path('admin/', admin.site.urls),
+    path('', include('api.urls')),  
 ]
 
