@@ -6,5 +6,5 @@ urlpatterns = [
     path("blog/profile/", TemplateView.as_view(template_name="blog/profile.html"), name="profile"),
     path("logout/", TemplateView.as_view(template_name="blog/logout.html"), name="logout"),
     path("login/", TemplateView.as_view(template_name="blog/login.html"), name="login"),
-    path("signup/", SignUpView.as_view(), name="templates/blog/signup"),
+    path("register/", SignUpView.as_view(), name="templates/blog/signup"),
 ]
