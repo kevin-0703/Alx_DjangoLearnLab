@@ -1,11 +1,13 @@
-from django.urls import path, include
+from django.urls import path
 from django.views.generic import TemplateView
-from .views import SignUpView
+from .views import SignUpView, PostDetailView, PostListView, PostUpdateView, PostDeleteView, edit_profile
+
 urlpatterns = [
-    path("blog/", include("django.contrib.auth.urls")),
-    path("blog/profile/", TemplateView.as_view(template_name="blog/profile.html"), name="profile"),
-    path("logout/", TemplateView.as_view(template_name="blog/logout.html"), name="logout"),
-    path("login/", TemplateView.as_view(template_name="blog/login.html"), name="login"),
-    path("register/", SignUpView.as_view(), name="templates/blog/register.html"),
-    path("edit_profile/", TemplateView.as_view(template_name="blog/edit_profile.html"), name="edit_profile"),
+    path("register/", SignUpView.as_view(), name="register"),
+    path("profile/", TemplateView.as_view(template_name="blog/profile.html"), name="profile"),
+    path("edit_profile/", edit_profile, name="edit_profile"),
+    path("posts/", PostListView.as_view(), name="post_list"),
+    path("posts/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
+    path("posts/<int:pk>/edit/", PostUpdateView.as_view(), name="post_update"),
+    path("posts/<int:pk>/delete/", PostDeleteView.as_view(), name="post_delete"),
 ]
