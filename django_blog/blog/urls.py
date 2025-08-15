@@ -7,7 +7,7 @@ urlpatterns = [
     path("profile/", TemplateView.as_view(template_name="blog/profile.html"), name="profile"),
     path("edit_profile/", edit_profile, name="edit_profile"),
     path("posts/", PostListView.as_view(), name="post_list"),
-    path("posts/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
-    path("post/<int:pk>/delete/", PostUpdateView.as_view(), name="post_update"),
+    path("post/new/", PostDetailView.as_view(), name="post_detail"),
+    path("post/<int:pk>/update/", PostUpdateView.as_view(), name="post_update"),
     path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="post_delete"),
 ]
