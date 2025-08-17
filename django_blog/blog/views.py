@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView ,DetailView, ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Post
+from .models import Post, Comment
+from .forms import CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # Create your views here.
@@ -74,3 +75,67 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+def add_comment(request, title):
+    post = get_object_or_404(Post, title=title)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            messages.success(request, "Comment added successfully.")
+            return redirect("post_list", title=post.title)
+    else:
+        form = CommentForm()
+    return render(request, "blog/add_comment.html", {"form": form, "post": post})
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = "blog/comment_delete_form.html"
+    
+    def get_success_url(self):
+        return reverse_lazy("post_detail", kwargs={"title": self.object.post.title})
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author or self.request.user.is_staff
+    
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    fields = ["content"]
+    template_name = "blog/comment_update_form.html"
+
+    def get_success_url(self):
+        return reverse_lazy("post_detail", kwargs={"title": self.object.post.title})
+
+    def form_valid(self, form):
+        messages.success(self.request, "Comment updated successfully.")
+        return super().form_valid(form)
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author or self.request.user.is_staff
+    
+class CommentListView(ListView):
+    model = Comment
+    template_name = "blog/comment_list.html"
+
+    def get_queryset(self):
+        post_title = self.kwargs.get("title")
+        return Comment.objects.filter(post__title=post_title).order_by("-created_at")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = get_object_or_404(Post, title=self.kwargs.get("title"))
+        return context
+    
+class CommentDetailView(DetailView):
+    model = Comment
+    template_name = "blog/comment_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comment = self.get_object()
+        context['post'] = comment.post
+        return context
