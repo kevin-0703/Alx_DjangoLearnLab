@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Post, Comment
 from .forms import CommentForm
+from taggit.models import Tag
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # Create your views here.
@@ -154,22 +155,17 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy("post_detail", kwargs={"title": self.object.post.title})
     
-def post_list(request):
-    posts = Post.objects.all()
-    return render(request, "blog/post_list.html", {"posts": posts})
+class PostByTagListView(ListView):
+    model = Post
+    template_name = "blog/posts_by_tag.html"
+    context_object_name = "posts"
 
-def posts_by_tag(request, tag_name):
-    tag = get_object_or_404(Tag, name=tag_name)
-    posts = Post.objects.filter(tags=tag)
-    return render(request, "blog/posts_by_tag.html", {"tag": tag, "posts": posts})
+    def get_queryset(self):
+        tag_slug = self.kwargs.get("tag_slug")
+        self.tag = get_object_or_404(Tag, slug=tag_slug)
+        return Post.objects.filter(tags__in=[self.tag])
 
-def search_posts(request):
-    query = request.GET.get("q")
-    posts = Post.objects.all()
-    if query:
-        posts = posts.filter(
-            Q(title__icontains=query) |
-            Q(content__icontains=query) |
-            Q(tags__name__icontains=query)
-        ).distinct()
-    return render(request, "blog/search_results.html", {"posts": posts, "query": query})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tag"] = self.tag
+        return context
