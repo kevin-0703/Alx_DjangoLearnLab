@@ -28,5 +28,5 @@ class PostForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control", "rows": 5}),
-            "tags": TagWidget(attrs={"class": "form-control", "placeholder": "Add tags..."}),
+            "tags": TagWidget(),
         }
