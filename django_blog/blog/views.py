@@ -143,7 +143,7 @@ class CommentDetailView(DetailView):
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
-    template_name = "blog/comment_form.html"
+    template_name = "blog/add_comment.html"
 
     def form_valid(self, form):
         form.instance.author = self.request.user
