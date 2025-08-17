@@ -1,6 +1,7 @@
 from django.urls import path
 from django.views.generic import TemplateView
 from .views import SignUpView, PostDetailView, PostListView, PostUpdateView, PostDeleteView, edit_profile, CommentDeleteView, CommentDetailView, CommentListView, CommentUpdateView, CommentCreateView
+from . import views
 
 urlpatterns = [
     path("register/", SignUpView.as_view(), name="register"),
