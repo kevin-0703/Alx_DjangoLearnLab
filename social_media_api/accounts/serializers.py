@@ -34,4 +34,5 @@ class RegisterSerializer(serializers.ModelSerializer):
                 email=validated_data['email'],
                 password=validated_data['password']
             )
+            Token.obkects.create(user=user)
             return user
