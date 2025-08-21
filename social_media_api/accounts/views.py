@@ -5,8 +5,9 @@ from .models import CustomUser
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer, LoginSerializer, RegisterSerializer, MyModelSerializer
+from django.contrib.auth import get_user_model
 
-
+User = get_user_model()
 # Create your views here.
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
