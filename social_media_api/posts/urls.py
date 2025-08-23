@@ -1,8 +1,10 @@
 from django.urls import path
-from .views import PostListView, PostDetailView, CommentListView, CommentDetailView
+from .views import FeedView
+from .views import PostViewSet, PostDetailView, CommentViewSet, CommentDetailView
 urlpatterns = [
-    path('posts/', PostListView.as_view(), name='post-list'),
+    path('posts/', PostViewSet.as_view({'get': 'list'}), name='post-list'),
     path('posts/<int:id>/', PostDetailView.as_view(), name='post-detail'),
-    path('comments/', CommentListView.as_view(), name='comment-list'),
+    path('comments/', CommentViewSet.as_view({'get': 'list'}), name='comment-list'),
     path('comments/<int:id>/', CommentDetailView.as_view(), name='comment-detail'),
+    path('feed/', FeedView.as_view(), name='feed'),
 ]
