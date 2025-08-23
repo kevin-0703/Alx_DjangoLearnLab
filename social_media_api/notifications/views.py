@@ -8,7 +8,7 @@ from django.contrib.auth.permissions import IsAuthenticated, permissions
 from rest_framework.response import Response, status
 
 # Create your views here.
-class LikePostNotificationView(generics.GenericAPIView):
+class LikePostView(generics.GenericAPIView):
     serializer_class = LikeNotificationSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -25,7 +25,7 @@ class LikePostNotificationView(generics.GenericAPIView):
             return Response({"message": "Post liked and notification sent."}, status=201)
         return Response({"message": "You have already liked this post."}, status=400)
         
-class UnLikePostNotificationDetailView(generics.RetrieveAPIView):
+class UnLikePostView(generics.RetrieveAPIView):
     serializer_class = UnLikeNotificationDetailSerializer
     permission_classes = [IsAuthenticated]
     def post(self, request, pk):
