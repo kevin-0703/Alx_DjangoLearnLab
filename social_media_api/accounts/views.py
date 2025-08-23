@@ -3,6 +3,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import CustomUser
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import permissions
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer, LoginSerializer, RegisterSerializer, MyModelSerializer
 from posts.models import Post
@@ -39,7 +40,7 @@ class FollowUserView(generics.GenericAPIView):
         return Response({"dtail": f"you are now following {user_to_follow.username}"})
     
 class UnfollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     def post(self, request, user_id):
         user_to_unfollow = get_object_or_404(User, id=user_id)
         request.user.following.remove(user_to_unfollow)
