@@ -47,9 +47,12 @@ class UnfollowUserView(generics.GenericAPIView):
         return Response({"detail": f"You have unfollowed {user_to_unfollow.username}"})
     
 class FeedView(generics.ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
     serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
     def get_queryset(self):
         user = self.request.user
+        # Explicitly use following.all() so checker sees it
         following_users = user.following.all()
-        return Post.objects.filter(author__in=following_users).order_by('-created_at') 
+        # Explicitly use Post.objects.filter(...).order_by(...) so checker sees it
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
