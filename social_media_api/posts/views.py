@@ -60,7 +60,6 @@ class LikePostView(generics.GenericAPIView):
 
         like, created = Like.objects.get_or_create(user=request.user, post=post)
         if created:
-            # Create a notification for the post author
             Notification.objects.create(
                 user=post.author,
                 actor=request.user,
